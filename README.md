@@ -27,7 +27,11 @@ $ lips 192.168.0.0/24
 ```
 
 
-## Binaries
+## Installation
 
-Releases are available on the
-[tags](https://git-mw.uk365office.co.uk/robphoenix/lips/tags) page.
+If you have **Go** installed you can clone this repo and run `go install` from
+within it. Otherwise releases are available on the
+[tags](https://git-mw.uk365office.co.uk/robphoenix/lips/tags) page. If you are
+downloading a binary be sure to either place it in your `$PATH` or add the
+directory you download it to to your `$PATH`. This will mean you should be able
+to use the `Lips` from anywhere on your machine.
