@@ -7,6 +7,8 @@ import (
 	"os"
 )
 
+// https://groups.google.com/forum/#!topic/golang-nuts/zlcYA4qk-94
+
 func main() {
 	addr := os.Args[1]
 	ip, ipnet, err := net.ParseCIDR(addr)
