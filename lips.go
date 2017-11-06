@@ -1,19 +1,27 @@
 package main
 
 import (
+	"fmt"
+	"io"
 	"net"
+	"os"
+)
+
+var (
+	out    io.Writer = os.Stdout
+	errOut io.Writer = os.Stderr
 )
 
 // ListCIDR ...
-func ListCIDR(cidr string) (ips []net.IP, err error) {
+func ListCIDR(cidr string) error {
 	ip, ipnet, err := net.ParseCIDR(cidr)
 	if err != nil {
-		return ips, err
+		return err
 	}
 	for i := ip.Mask(ipnet.Mask); ipnet.Contains(i); inc(i) {
-		ips = append(ips, dupIP(i))
+		fmt.Fprintln(out, i)
 	}
-	return ips, nil
+	return nil
 }
 
 func inc(ip net.IP) {
@@ -23,14 +31,4 @@ func inc(ip net.IP) {
 			break
 		}
 	}
-}
-
-func dupIP(ip net.IP) net.IP {
-	// To save space, try and only use 4 bytes
-	if x := ip.To4(); x != nil {
-		ip = x
-	}
-	dup := make(net.IP, len(ip))
-	copy(dup, ip)
-	return dup
 }
