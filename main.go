@@ -8,16 +8,13 @@ import (
 func main() {
 	args := os.Args
 
-	if len(args) == 2 {
-		err := PrintCIDR(args[1])
-		if err != nil {
+	switch len(args) {
+	case 2:
+		if err := PrintCIDR(args[1]); err != nil {
 			fmt.Fprintln(errOut, err)
 		}
-	}
-
-	if len(args) == 3 {
-		err := PrintRange(args[1], args[2])
-		if err != nil {
+	case 3:
+		if err := PrintRange(args[1], args[2]); err != nil {
 			fmt.Fprintln(errOut, err)
 		}
 	}
