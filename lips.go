@@ -9,9 +9,8 @@ import (
 )
 
 var (
-	out       io.Writer = os.Stdout
-	errOut    io.Writer = os.Stderr
-	increment int
+	out    io.Writer = os.Stdout
+	errOut io.Writer = os.Stderr
 )
 
 // PrintCIDR ...
