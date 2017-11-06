@@ -1,20 +1,25 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"os"
 )
 
+func init() {
+	flag.IntVar(&increment, "i", 1, "value to increment by")
+	flag.Parse()
+}
+
 func main() {
-	args := os.Args
+	args := flag.Args()
 
 	switch len(args) {
-	case 2:
-		if err := PrintCIDR(args[1]); err != nil {
+	case 1:
+		if err := PrintCIDR(args[0], increment); err != nil {
 			fmt.Fprintln(errOut, err)
 		}
-	case 3:
-		if err := PrintRange(args[1], args[2]); err != nil {
+	case 2:
+		if err := PrintRange(args[0], args[1], increment); err != nil {
 			fmt.Fprintln(errOut, err)
 		}
 	}

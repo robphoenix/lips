@@ -9,24 +9,25 @@ import (
 )
 
 var (
-	out    io.Writer = os.Stdout
-	errOut io.Writer = os.Stderr
+	out       io.Writer = os.Stdout
+	errOut    io.Writer = os.Stderr
+	increment int
 )
 
 // PrintCIDR ...
-func PrintCIDR(cidr string) error {
+func PrintCIDR(cidr string, increment int) error {
 	ip, ipnet, err := net.ParseCIDR(cidr)
 	if err != nil {
 		return err
 	}
-	for i := ip.Mask(ipnet.Mask); ipnet.Contains(i); inc(i) {
+	for i := ip.Mask(ipnet.Mask); ipnet.Contains(i); inc(i, increment) {
 		fmt.Fprintln(out, i)
 	}
 	return nil
 }
 
 // PrintRange ...
-func PrintRange(start, finish string) error {
+func PrintRange(start, finish string, increment int) error {
 	a := net.ParseIP(start)
 	b := net.ParseIP(finish)
 	if a == nil || b == nil {
@@ -39,17 +40,21 @@ func PrintRange(start, finish string) error {
 		}
 		return fmt.Errorf(e.String())
 	}
-	fmt.Fprintln(out, a)
-	for !a.Equal(b) {
-		inc(a)
+
+	for {
+		if c := bytes.Compare(a, b); c > 0 {
+			break
+		}
 		fmt.Fprintln(out, a)
+		inc(a, increment)
 	}
 	return nil
 }
 
-func inc(ip net.IP) {
+func inc(ip net.IP, increment int) {
 	for j := len(ip) - 1; j >= 0; j-- {
-		ip[j]++
+		// ip[j]++
+		ip[j] += byte(increment)
 		if ip[j] > 0 {
 			break
 		}
