@@ -13,8 +13,8 @@ var (
 	errOut io.Writer = os.Stderr
 )
 
-// ListCIDR ...
-func ListCIDR(cidr string) error {
+// PrintCIDR ...
+func PrintCIDR(cidr string) error {
 	ip, ipnet, err := net.ParseCIDR(cidr)
 	if err != nil {
 		return err
@@ -25,8 +25,8 @@ func ListCIDR(cidr string) error {
 	return nil
 }
 
-// ListRange ...
-func ListRange(start, finish string) error {
+// PrintRange ...
+func PrintRange(start, finish string) error {
 	a := net.ParseIP(start)
 	b := net.ParseIP(finish)
 	if a == nil || b == nil {

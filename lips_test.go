@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestListCIDR(t *testing.T) {
+func TestPrintCIDR(t *testing.T) {
 	cidr := "192.168.0.0/30"
 	expected := "192.168.0.0\n192.168.0.1\n192.168.0.2\n192.168.0.3\n"
 	var actual bytes.Buffer
@@ -13,7 +13,7 @@ func TestListCIDR(t *testing.T) {
 	out = &actual
 	defer func() { out = originalOut }()
 
-	err := ListCIDR(cidr)
+	err := PrintCIDR(cidr)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -22,7 +22,7 @@ func TestListCIDR(t *testing.T) {
 	}
 }
 
-func TestListRange(t *testing.T) {
+func TestPrintRange(t *testing.T) {
 	start := "192.168.0.0"
 	finish := "192.168.0.3"
 	expected := "192.168.0.0\n192.168.0.1\n192.168.0.2\n192.168.0.3\n"
@@ -31,7 +31,7 @@ func TestListRange(t *testing.T) {
 	out = &actual
 	defer func() { out = originalOut }()
 
-	err := ListRange(start, finish)
+	err := PrintRange(start, finish)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
