@@ -32,10 +32,10 @@ func PrintRange(start, finish string) error {
 	if a == nil || b == nil {
 		var e bytes.Buffer
 		if a == nil {
-			e.WriteString(fmt.Sprintf("not a valid IP address: %s\n", start))
+			e.WriteString(fmt.Sprintf("invalid IP address: %s\n", start))
 		}
 		if b == nil {
-			e.WriteString(fmt.Sprintf("not a valid IP address: %s\n", finish))
+			e.WriteString(fmt.Sprintf("invalid IP address: %s\n", finish))
 		}
 		return fmt.Errorf(e.String())
 	}
