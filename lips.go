@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net"
@@ -20,6 +21,28 @@ func ListCIDR(cidr string) error {
 	}
 	for i := ip.Mask(ipnet.Mask); ipnet.Contains(i); inc(i) {
 		fmt.Fprintln(out, i)
+	}
+	return nil
+}
+
+// ListRange ...
+func ListRange(start, finish string) error {
+	a := net.ParseIP(start)
+	b := net.ParseIP(finish)
+	if a == nil || b == nil {
+		var e bytes.Buffer
+		if a == nil {
+			e.WriteString(fmt.Sprintf("not a valid IP address: %s\n", start))
+		}
+		if b == nil {
+			e.WriteString(fmt.Sprintf("not a valid IP address: %s\n", finish))
+		}
+		return fmt.Errorf(e.String())
+	}
+	fmt.Fprintln(out, a)
+	for !a.Equal(b) {
+		inc(a)
+		fmt.Fprintln(out, a)
 	}
 	return nil
 }
