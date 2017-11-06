@@ -11,9 +11,6 @@
 Lips is basically a Go version of [prips](https://gitlab.com/prips/prips), a
 tool that can be used to print all of the IP address on a given range.
 
-The code to increment IP addresses is originally by [Russ
-Cox](https://groups.google.com/forum/#!topic/golang-nuts/zlcYA4qk-94)
-
 ## Examples
 
 **CIDR address**
