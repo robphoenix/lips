@@ -2,27 +2,16 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"net"
 	"os"
 )
 
 func main() {
-	addr := os.Args[1]
-	ip, ipnet, err := net.ParseCIDR(addr)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for i := ip.Mask(ipnet.Mask); ipnet.Contains(i); inc(i) {
-		fmt.Println(i)
-	}
-}
+	args := os.Args
 
-func inc(ip net.IP) {
-	for j := len(ip) - 1; j >= 0; j-- {
-		ip[j]++
-		if ip[j] > 0 {
-			break
+	if len(args) == 2 {
+		cidr := args[1]
+		if err := ListCIDR(cidr); err != nil {
+			fmt.Fprintf(os.Stderr, "could not list IPs from %s: %v", cidr, err)
 		}
 	}
 }
