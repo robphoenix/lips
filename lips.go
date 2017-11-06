@@ -21,6 +21,7 @@ func PrintCIDR(cidr string, increment int) error {
 	}
 	for i := ip.Mask(ipnet.Mask); ipnet.Contains(i); inc(i, increment) {
 		fmt.Fprintln(out, i)
+		i = inc(i, increment)
 	}
 	return nil
 }
@@ -45,17 +46,21 @@ func PrintRange(start, finish string, increment int) error {
 			break
 		}
 		fmt.Fprintln(out, a)
-		inc(a, increment)
+		a = inc(a, increment)
 	}
 	return nil
 }
 
-func inc(ip net.IP, increment int) {
-	for j := len(ip) - 1; j >= 0; j-- {
-		// ip[j]++
-		ip[j] += byte(increment)
-		if ip[j] > 0 {
-			break
-		}
-	}
+func int32toIP(a int32) net.IP {
+	return net.IPv4(byte(a>>24), byte(a>>16), byte(a>>8), byte(a))
+}
+
+func IPtoInt32(ip net.IP) int32 {
+	ip = ip.To4()
+	return int32(ip[0])<<24 | int32(ip[1])<<16 | int32(ip[2])<<8 | int32(ip[3])
+}
+
+func inc(ip net.IP, increment int) net.IP {
+	a := int(IPtoInt32(ip[len(ip)-4:]))
+	return int32toIP(int32(a + increment))
 }

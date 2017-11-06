@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"io/ioutil"
 	"testing"
 )
 
@@ -49,6 +50,26 @@ func TestPrintCIDR(t *testing.T) {
 	}
 }
 
+func TestPrintCIDRIncrementBy256(t *testing.T) {
+	var actual bytes.Buffer
+	originalOut := out
+	out = &actual
+	defer func() { out = originalOut }()
+
+	data := "./testdata/increment-by-256.txt"
+	expected, err := ioutil.ReadFile(data)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	err = PrintCIDR("10.8.0.0/16", 256)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if actual.String() != string(expected) {
+		t.Errorf("expected:\n\t%q\nactual:\n\t%q", string(expected), actual.String())
+	}
+}
+
 var rangeTestCases = []struct {
 	start       string
 	finish      string
@@ -90,6 +111,20 @@ var rangeTestCases = []struct {
 		increment:   3,
 		expected:    "192.168.0.0\n192.168.0.3\n192.168.0.6\n192.168.0.9\n",
 		description: "odd increment, even finish",
+	},
+	{
+		start:       "10.8.0.0",
+		finish:      "10.8.10.0",
+		increment:   256,
+		expected:    "10.8.0.0\n10.8.1.0\n10.8.2.0\n10.8.3.0\n10.8.4.0\n10.8.5.0\n10.8.6.0\n10.8.7.0\n10.8.8.0\n10.8.9.0\n10.8.10.0\n",
+		description: "increment by 256",
+	},
+	{
+		start:       "10.8.0.0",
+		finish:      "10.8.10.100",
+		increment:   256,
+		expected:    "10.8.0.0\n10.8.1.0\n10.8.2.0\n10.8.3.0\n10.8.4.0\n10.8.5.0\n10.8.6.0\n10.8.7.0\n10.8.8.0\n10.8.9.0\n10.8.10.0\n",
+		description: "increment by 256, incomplete range",
 	},
 }
 
