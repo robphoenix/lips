@@ -1,8 +1,0 @@
-image: golang:latest
-stages:
-    - test
-test:
-    stage: test
-    script:
-      - export GOPATH=$PWD
-      - go test -v
